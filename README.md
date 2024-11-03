@@ -54,5 +54,92 @@ prompt = """
 7. Results
 ![Result of speech to text](img/gcp/speech_to_text_output.png)
 
+## 2. Work with Pre-trained Vision Models
+### GCP Vision API
+1. Upload an image in a bucket
+2. Under "All modalities (images, video, audio, text) at once," go to the default codes for images and alter it as follows:
+* DEFAULT CODE
+```python
+image_file_path = "cloud-samples-data/generative-ai/image/a-man-and-a-dog.png"
+image_file_uri = f"gs://{image_file_path}"
+image_file_url = f"https://storage.googleapis.com/{image_file_path}"
+
+IPython.display.Image(image_file_url, width=450)
+```
+* ADJUSTED CODE
+```python
+# Define bucket name and file path
+image_file_name = "kids_playing_soccer.png"  # Change with your own file name
+
+# GCS URI and Public URL
+image_file_uri = f"gs://{bucket_name}/{image_file_name}"
+image_file_url = f"https://storage.googleapis.com/{bucket_name}/{image_file_name}"
+
+IPython.display.Image(image_file_url, width=450)
+```
+``` python
+image_file = Part.from_uri(image_file_uri, mime_type="image/png")
+
+# Adjust your prompt as needed for your image
+prompt = """
+  How many kids are in the image? How many soccer balls? How many agility soccer cones?
+"""
+
+contents = [image_file, prompt]
+
+response = model.generate_content(contents)
+print(response.text)
+```
+* Image + Results
+![Kids playing soccer](img/gcp/kids_playing_soccer.png)
+```txt
+Here are the answers based on the image:
+
+* **Kids:** There are two kids in the image. One is prominently featured in the foreground, actively playing soccer. The other is in the background, appearing to be another player.
+
+* **Soccer balls:** There are two soccer balls visible. One is in the foreground, near the boy's feet, and the other is in the background, further away.
+
+* **Agility cones:** There is one agility cone partially visible in the background.
+```
+
+### Azure AI Vision
+#### Create Computer Vision
+1. Click "Computer vision" from the search bar
+![Computer vision link](img/azure/comp_vision.png)
+2. Click "Create" and apply the following configuration
+    * Select your subscription, resource group, region, and add a name
+    * Pricing tier: Free
+
+#### Create the Azure Machine Learning (AML) Notebook
+1. Click "Azure Machine Learning" from the search bar
+![Azure machine learning link](img/azure/aml.png)
+2. Click "Create" and then "New workspace"
+![New workspace](img/azure/create_workspace.png)
+3. After selecting a subscription, resource group, region, and adding a name, create the workspace
+4. Click the newly created workspace, then select "Launch studio"
+![Launch studio link](img/azure/launch_studio_link.png)
+5. In the Home tab, click "Create notebook"
+6. Upload an image into the "File" section
+7. [azure_ai.ipynb](placeholder) contains the code used to detect objects in image
+    * Results
+```txt
+Object: sports ball, Confidence: 0.634, Bounding Box: {'x': 98, 'y': 212, 'w': 30, 'h': 26}
+Object: soccer ball, Confidence: 0.832, Bounding Box: {'x': 256, 'y': 389, 'w': 73, 'h': 65}
+Object: person, Confidence: 0.694, Bounding Box: {'x': 169, 'y': 87, 'w': 69, 'h': 156}
+Object: person, Confidence: 0.891, Bounding Box: {'x': 263, 'y': 59, 'w': 305, 'h': 394}
+```
+![Kids playing soccer image with bounding boxes](img/azure/bounding_boxes_kids_soccer.png)
+
+## 3. Reflection of Accuracy and Result in GCP and Azure
+
+
+## 4. Challenges and Resolution
+
+NOTE: 
+None of the pre-configured notebook samples involved object detection; the closest was image classification. However, even within the realm of image classification, the samples seem to emphasize providing data to train models rather than executing specific tasks, such as classification itself. 
+
+Thus, I used ChatGPT to aid in creating the code for object detection in the notebook
+
+
 ## Credits
 1. [How to Set Buckets and Files Public In Google Cloud Storage](https://www.youtube.com/watch?v=3V8aDWRreFU)
