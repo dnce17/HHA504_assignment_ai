@@ -5,7 +5,7 @@
 #### Create a Bucket in Cloud Storage
 1. Click "Buckets" in the GCP search bar
 ![Buckets link in search bar](img/gcp/buckets_link.png)
-2. Create a bucket with the following configuration
+2. Create a bucket with the following configuration:
     * Location type: Region
 3. Click the bucket after it's made
 4. Upload an mp3 file
@@ -16,14 +16,14 @@
 NOTE: The permissions above makes the bucket public, which will allow the Vertex AI notebook to access it later on
 
 #### Speech-to-Text in Vertex AI Notebook
-NOTE: If you run into errors that mention needing to enable certain APIs, make sure to enable them to resolve the issue.
+**NOTE**: If you run into errors that mention needing to enable certain APIs, make sure to enable them to resolve the issue.
 1. Click "Vertex AI" in the GCP search bar
 2. Hover to the left pane and click "Colab Enterprise"
 ![Colab Enterprise link](img/gcp/colab_enterprise_link.png)
 3. Under "Sample notebooks," click "Getting started with Gemini 1.5 Flash"
-    * NOTE: These sample notebooks are pre-configured
-4. Run the default codes under "Install Vertex AI SDK for Python" to "Load the Gemini 1.5 Flash model"
-5. Under "Audio understanding," the code was adjusted as followed:
+    * **NOTE**: These sample notebooks are pre-configured
+4. Run the default codes under "Install Vertex AI SDK for Python" up to "Load the Gemini 1.5 Flash model"
+5. Under "Audio understanding," the code was adjusted as follows:
 * DEFAULT CODE
 ```python
 audio_file_path = "cloud-samples-data/generative-ai/audio/pixel.mp3"
@@ -33,7 +33,7 @@ audio_file_url = f"https://storage.googleapis.com/{audio_file_path}"
 IPython.display.Audio(audio_file_url)
 ```
 * ADJUSTED CODE TO INCLUDE BUCKETS
-    * Reason: Google Cloud Storage (GCS) files have paths that include the bucket name and the file path within that bucket. 
+    * **Reason**: Google Cloud Storage (GCS) files have paths that include the bucket name and the file path within that bucket. 
 ```python
 # Define bucket name and file path
 bucket_name = "transcription_use"  # Replace with your actual bucket name
@@ -51,13 +51,15 @@ prompt = """
     Can you transcribe the audio content?
 """
 ```
-7. Results
+7. [gemini_1_5_flash](https://github.com/dnce17/HHA504_assignment_ai/blob/main/gemini_1_5_flash.ipynb) contains the code used to detect objects in image
+
+**Results**
 ![Result of speech to text](img/gcp/speech_to_text_output.png)
 
 ## 2. Work with Pre-trained Vision Models
 ### GCP Vision API
 1. Upload an image in a bucket
-2. Under "All modalities (images, video, audio, text) at once," go to the default codes for images and alter it as follows:
+2. Under "All modalities (images, video, audio, text) at once," go to the image-related default codes and alter it as follows:
 * DEFAULT CODE
 ```python
 image_file_path = "cloud-samples-data/generative-ai/image/a-man-and-a-dog.png"
@@ -120,7 +122,7 @@ Here are the answers based on the image:
 ![Launch studio link](img/azure/launch_studio_link.png)
 5. In the Home tab, click "Create notebook"
 6. Upload an image into the "File" section
-7. [azure_ai.ipynb](placeholder) contains the code used to detect objects in image
+7. [azure_ai.ipynb](https://github.com/dnce17/HHA504_assignment_ai/blob/main/azure_ai.ipynb) contains the code used to detect objects in image
     * The subscription key and endpoint of the created workspace is used here
 ![Workspace source details](img/azure/comp_vision_resource.png)
 
@@ -134,11 +136,11 @@ Object: person, Confidence: 0.891, Bounding Box: {'x': 263, 'y': 59, 'w': 305, '
 ![Kids playing soccer image with bounding boxes](img/azure/bounding_boxes_kids_soccer.png)
 
 ## 3. Comparison and Reflection of Accuracy and Result in GCP and Azure
-GCP's AI model appears to be more accurate than Azure's model in detecting objects in images. However, this may partly be due to how users can enter a prompt in GCP, which allows them to be more clear with what they want detected from the image in contrast to Azure that does not offer prompts. In the image above, I told GCP's model to specifically identify the amount of kids, soccer ball, and agility cones, which it was able to do with high accuracy. On the other hand, Azure was able to identify the amount of kids and balls correctly, but it was unable to detect the agility cone.
+GCP's AI model appears to be more accurate than Azure's model in detecting objects in images. However, this may partly be due to how users can enter a prompt in GCP, which allows them to be more clear with what they want detected from the image in contrast to Azure that does not offer prompts. In the image above, I told GCP's model to specifically identify the amount of kids, soccer ball, and agility cones, which it was able to do with high accuracy. On the other hand, Azure was able to identify the amount of kids and balls correctly, but was unable to detect the agility cone.
 
 In terms of ease of use, I found GCP to be much easier to use than Azure. I felt the code and instructions provided through GCP's notebook sample for Gemini 1.5 Flash was clearer in what they meant and the default code all ran without issue, allowing me to get a quicker sense of what the code did and alter and run it without significant difficulty. In contrast, the instructions and code provided for Azure's image classification notebook felt the opposite and seemed to require much more steps than GCP to perform the desired function. However, Azure's image classification notebook appeared to focus more on training the model than the task itself. Thus, I opted to utilize ChatGPT to provide code for objection detection in Azure, which was successful after slight modifications.
 
-Overall, I currently feel that GCP's AI models are more user-friendly than Azure's.
+Overall, I currently feel that GCP is more user-friendly than Azure.
 
 ## 4. Challenges and Resolution
 ### GCP's Gemini 1.5 Flash model
@@ -150,10 +152,10 @@ image_file_url = f"https://storage.googleapis.com/{image_file_path}"
 
 IPython.display.Image(image_file_url, width=450)
 ```
-It was through ChatGPT that I discovered that I needed to create a bucket inside Google Cloud Storage and upload my files there to access from the notebook, which proved successful in getting GCP's speech-to-text and object detection to work. 
+It was through ChatGPT that I discovered that I needed to create a bucket inside Google Cloud Storage and upload my files there to later access from the notebook, which proved successful in getting GCP's speech-to-text and object detection to work. 
 
 ### Azure's Computer Vision
-I looked through Azure's preconfigured notebook samples to see if they had code related to object detection in some way. However, image classification was the closest related function I found. But, even within the realm of image classification, the samples seem to emphasize providing data to train models rather than executing specific tasks, such as classification itself. As such, I used ChatGPT to aid in creating the code for object detection in the notebook, which provided successful.
+I looked through Azure's preconfigured notebook samples to see if they had code related to object detection in some way. However, image classification was the closest function I found. But even within the realm of image classification, the samples seem to emphasize providing data to train models rather than executing specific tasks, like classification itself. As such, I used ChatGPT to aid in creating the code for object detection in the notebook, which provided successful.
 
 ## Credits
 1. ChatGPT
