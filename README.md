@@ -92,7 +92,7 @@ contents = [image_file, prompt]
 response = model.generate_content(contents)
 print(response.text)
 ```
-* Image + Results
+* Image + Results  
 ![Kids playing soccer](img/gcp/kids_playing_soccer.png)
 ```txt
 Here are the answers based on the image:
