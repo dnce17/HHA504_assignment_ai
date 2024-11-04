@@ -121,7 +121,10 @@ Here are the answers based on the image:
 5. In the Home tab, click "Create notebook"
 6. Upload an image into the "File" section
 7. [azure_ai.ipynb](placeholder) contains the code used to detect objects in image
-    * Results
+    * The subscription key and endpoint of the created workspace is used here
+![Workspace source details](img/azure/comp_vision_resource.png)
+
+**Results**
 ```txt
 Object: sports ball, Confidence: 0.634, Bounding Box: {'x': 98, 'y': 212, 'w': 30, 'h': 26}
 Object: soccer ball, Confidence: 0.832, Bounding Box: {'x': 256, 'y': 389, 'w': 73, 'h': 65}
@@ -130,16 +133,28 @@ Object: person, Confidence: 0.891, Bounding Box: {'x': 263, 'y': 59, 'w': 305, '
 ```
 ![Kids playing soccer image with bounding boxes](img/azure/bounding_boxes_kids_soccer.png)
 
-## 3. Reflection of Accuracy and Result in GCP and Azure
+## 3. Comparison and Reflection of Accuracy and Result in GCP and Azure
+GCP's AI model appears to be more accurate than Azure's model in detecting objects in images. However, this may partly be due to how users can enter a prompt in GCP, which allows them to be more clear with what they want detected from the image in contrast to Azure that does not offer prompts. In the image above, I told GCP's model to specifically identify the amount of kids, soccer ball, and agility cones, which it was able to do with high accuracy. On the other hand, Azure was able to identify the amount of kids and balls correctly, but it was unable to detect the agility cone.
 
+In terms of ease of use, I found GCP to be much easier to use than Azure. I felt the code and instructions provided through GCP's notebook sample for Gemini 1.5 Flash was clearer in what they meant and the default code all ran without issue, allowing me to get a quicker sense of what the code did and alter and run it without significant difficulty. In contrast, the instructions and code provided for Azure's image classification notebook felt the opposite and seemed to require much more steps than GCP to perform the desired function. However, Azure's image classification notebook appeared to focus more on training the model than the task itself. Thus, I opted to utilize ChatGPT to provide code for objection detection in Azure, which was successful after slight modifications.
+
+Overall, I currently feel that GCP's AI models are more user-friendly than Azure's.
 
 ## 4. Challenges and Resolution
+### GCP's Gemini 1.5 Flash model
+One issue I ran into was the audio file not processing correctly although I uploaded it to GCP's file section. I double checked and the path to the image was correct, so I was not sure what else to do. As such, I pasted the below code to ChatGPT and asked why the code was not working although the path was correct. 
+```python
+image_file_path = "/content/kids_playing_soccer.png"
+image_file_uri = f"gs://{image_file_path}"
+image_file_url = f"https://storage.googleapis.com/{image_file_path}"
 
-NOTE: 
-None of the pre-configured notebook samples involved object detection; the closest was image classification. However, even within the realm of image classification, the samples seem to emphasize providing data to train models rather than executing specific tasks, such as classification itself. 
+IPython.display.Image(image_file_url, width=450)
+```
+It was through ChatGPT that I discovered that I needed to create a bucket inside Google Cloud Storage and upload my files there to access from the notebook, which proved successful in getting GCP's speech-to-text and object detection to work. 
 
-Thus, I used ChatGPT to aid in creating the code for object detection in the notebook
-
+### Azure's Computer Vision
+I looked through Azure's preconfigured notebook samples to see if they had code related to object detection in some way. However, image classification was the closest related function I found. But, even within the realm of image classification, the samples seem to emphasize providing data to train models rather than executing specific tasks, such as classification itself. As such, I used ChatGPT to aid in creating the code for object detection in the notebook, which provided successful.
 
 ## Credits
-1. [How to Set Buckets and Files Public In Google Cloud Storage](https://www.youtube.com/watch?v=3V8aDWRreFU)
+1. ChatGPT
+2. [How to Set Buckets and Files Public In Google Cloud Storage](https://www.youtube.com/watch?v=3V8aDWRreFU)
